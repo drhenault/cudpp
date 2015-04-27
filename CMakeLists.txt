@@ -128,6 +128,8 @@ endif (CUDPP_BUILD_APPLICATIONS)
 
 # Make files that store configuration to help dependent CMake files use
 # these libraries.
+set(ConfigPackageLocation lib/cmake/cudpp)
+
 export(
   TARGETS cudpp cudpp_hash
   FILE ${LIBRARY_OUTPUT_PATH}/cudpp-targets.cmake
@@ -147,7 +149,7 @@ configure_file(
   @ONLY
   )
 install(FILES ${LIBRARY_OUTPUT_PATH}/cudpp-config.cmake.install
-  DESTINATION lib
+  DESTINATION ${ConfigPackageLocation}
   RENAME cudpp-config.cmake
   )
 
@@ -157,7 +159,16 @@ configure_file(
   @ONLY
   )
 install(FILES ${LIBRARY_OUTPUT_PATH}/cudpp-config-version.cmake
-  DESTINATION lib
+  DESTINATION ${ConfigPackageLocation}
+  )
+
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/cudpp_config.h.in
+  ${LIBRARY_OUTPUT_PATH}/include/cudpp_config.h
+  @ONLY
+  )  
+install(FILES ${LIBRARY_OUTPUT_PATH}/include/cudpp_config.h
+  DESTINATION include
   )
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${cudpp_VERSION_MAJOR})
